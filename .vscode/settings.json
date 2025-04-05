@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "AirBlastAdventure.sln"
+    "dotnet.defaultSolution": "S3.sln"
 }

@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      CinemachineToggleTile_0: -7738090070764825113
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
