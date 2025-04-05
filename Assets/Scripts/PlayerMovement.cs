@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using Unity.Cinemachine;
 
 
 public class PlayerMovement : MonoBehaviour
@@ -13,9 +14,17 @@ public class PlayerMovement : MonoBehaviour
 
     //---Resetting position and level teleportation----
     private Vector2 startPosition;
-    private Vector2 level1SpawnPoint;
+    public Transform levelMenuSpawnPoint;
+    public Transform level0SpawnPoint;
+    public Transform level1SpawnPoint;
     public Transform level2SpawnPoint;
     public Transform level3SpawnPoint;
+
+    //Cinemachine Rotatoin Toggler
+    public CinemachineCamera cam;
+    
+
+
 
     //--UI Level Text----
     public TextMeshProUGUI levelText;
@@ -25,10 +34,11 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); 
-        startPosition = transform.position;
-        level1SpawnPoint = startPosition;
+        startPosition = levelMenuSpawnPoint.position;
+        
 
         StartCoroutine(DisplayLevelText("Welcome to AirBlastAdventure!"));
+
     }
 
     // Update is called once per frame
@@ -63,25 +73,44 @@ public class PlayerMovement : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Hazard"))
         {
-            transform.position = startPosition;
+            StartCoroutine(ResetAfterDelay(1f)); // 1s delay respawn effect
         }
+
+        if(collision.gameObject.CompareTag("ToLevel0"))
+        {
+            transform.position = level0SpawnPoint.position;
+            startPosition = level0SpawnPoint.position; //set new spawnPoint
+            StartCoroutine(DisplayLevelText("Level 0"));
+        }
+
+        if(collision.gameObject.CompareTag("ToLevel1"))
+        {
+            transform.position = level1SpawnPoint.position;
+            startPosition = level1SpawnPoint.position; 
+            StartCoroutine(DisplayLevelText("Level 1"));
+        }
+        
         if(collision.gameObject.CompareTag("ToLevel2"))
         {
             transform.position = level2SpawnPoint.position;
-            startPosition = level2SpawnPoint.position; //set new spawnPoint
+            startPosition = level2SpawnPoint.position; 
             StartCoroutine(DisplayLevelText("Level 2"));
         }
+
         if(collision.gameObject.CompareTag("ToLevel3"))
         {
             transform.position = level3SpawnPoint.position;
             startPosition = level3SpawnPoint.position; 
             StartCoroutine(DisplayLevelText("Level 3"));
         }
+
          if(collision.gameObject.CompareTag("Restart"))
         {
-            transform.position = level1SpawnPoint;
-            startPosition = level1SpawnPoint; 
+            transform.position = levelMenuSpawnPoint.position;
+            startPosition = levelMenuSpawnPoint.position; 
+            StartCoroutine(DisplayLevelText("Thanks for playing MVP DEMO!"));
         }
+        
         
         
     }
@@ -93,6 +122,21 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(levelTextDisplayTime);
         levelText.gameObject.SetActive(false);
     }
+
+
+IEnumerator ResetAfterDelay(float delay)
+{
+    rb.linearVelocity = Vector2.zero; // Stop movement
+    rb.isKinematic = true;      // Freeze physics
+
+    yield return new WaitForSeconds(delay);
+
+    transform.position = startPosition;
+
+
+    rb.isKinematic = false;     // Resume physics
+    StartCoroutine(DisplayLevelText("Try AGAIN!"));
+}
 
 
 }

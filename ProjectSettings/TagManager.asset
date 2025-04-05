@@ -8,6 +8,9 @@ TagManager:
   - ToLevel2
   - Restart
   - ToLevel3
+  - CinemachineToggle
+  - ToLevel0
+  - ToLevel1
   layers:
   - Default
   - TransparentFX
