@@ -1829,7 +1829,7 @@ Rigidbody2D:
   m_Mass: 0.4
   m_LinearDamping: 1
   m_AngularDamping: 1
-  m_GravityScale: 0
+  m_GravityScale: 0.1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1890,9 +1890,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81fdb0199a2521ea960e83146be7172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 0.5
-  rotationSpeed: 250
-  jumpCooldown: 0.1
+  jumpForce: 500
+  rotationSpeed: 100
+  pumpDuration: 0.35
+  pumpCooldown: 0.5
+  visualTransform: {fileID: 861062307}
+  pumpScale: {x: 1.2, y: 0.8, z: 1}
+  scaleLerpSpeed: 5
 --- !u!114 &437454994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1956,7 +1960,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 1
   rotationSpeed: 4
-  jumpCooldown: 0.35
+  pumpDuration: 0.25
+  pumpCooldown: 0.5
+  visualTransform: {fileID: 437454990}
+  pumpScale: {x: 1.2, y: 0.8, z: 1}
+  scaleLerpSpeed: 5
 --- !u!114 &437454997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2500,7 +2508,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000005649166, y: -0.0000000069794805, z: 3.9428245e-16, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.01360131, w: 0.99990755}
   m_LocalPosition: {x: 0, y: -2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3866,7 +3874,7 @@ Transform:
   m_GameObject: {fileID: 858608490}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 105.8, y: 56, z: -10.347336}
+  m_LocalPosition: {x: 78.44, y: 0.2, z: -10.347336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4726,7 +4734,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1075958202}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000056491647, y: -0.0000000069794783, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.01360131, w: 0.99990755}
   m_LocalPosition: {x: 0, y: -2, z: -10}
   m_LocalScale: {x: 1.2500001, y: 1.5701052, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4804,26 +4812,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1075958202}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Composition:
-    ScreenPosition: {x: 0, y: 0}
-    DeadZone:
-      Enabled: 0
-      Size: {x: 0.2, y: 0.2}
-    HardLimits:
-      Enabled: 0
-      Size: {x: 0.8, y: 0.8}
-      Offset: {x: 0, y: 0}
-  CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0, y: 0}
-  Lookahead:
-    Enabled: 0
-    Time: 0
-    Smoothing: 0
-    IgnoreY: 0
+  Damping: 0
 --- !u!1001 &1089798399
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5484,7 +5476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3663159962903771393, guid: d11c8bc329126ba60ac66314eceda0f7, type: 3}
       propertyPath: m_TagString
-      value: ToLevel2
+      value: ToLevel3
       objectReference: {fileID: 0}
     - target: {fileID: 7073555045524959029, guid: d11c8bc329126ba60ac66314eceda0f7, type: 3}
       propertyPath: m_IsTrigger
