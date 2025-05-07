@@ -45,7 +45,7 @@ public class PlayerTeleport : MonoBehaviour
                 Teleport(level0SpawnPoint, "Level 1: Explore the mechanics then go up to enter the next level!");
                 break;
             case TAG_LEVEL_1:
-                Teleport(level1SpawnPoint, "TEMPORARY");
+                Teleport(level1SpawnPoint, "Level 3: Find the safe Exit");
                 break;
             case TAG_LEVEL_2:
                 Teleport(level2SpawnPoint, "Level 2: Avoid the enemies and escape!");

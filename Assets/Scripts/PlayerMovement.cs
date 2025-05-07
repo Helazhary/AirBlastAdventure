@@ -1,3 +1,4 @@
+// using System.Diagnostics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -23,16 +24,19 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerInput input;
 
+    private AudioSource deflate_audio;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         input = GetComponent<PlayerInput>();
+        deflate_audio = GetComponent<AudioSource>();
 
         // Fallback assignment
         if (visualTransform == null && transform.childCount > 0)
         {
             visualTransform = transform.GetChild(0);
-            Debug.LogWarning("VisualTransform was auto-assigned: " + visualTransform.name);
+            // Debug.LogWarning("VisualTransform was auto-assigned: " + visualTransform.name);
         }
 
         defaultScale = visualTransform != null ? visualTransform.localScale : Vector3.one;
@@ -49,40 +53,42 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isPumping)
         {
-            // float elapsed = Time.time - pumpStartTime;
-            // float taperFactor = 1f - Mathf.Clamp01(elapsed / pumpDuration); // 1 to 0 over duration
+            float elapsed = Time.time - pumpStartTime;
+            float taperFactor = 1f - Mathf.Clamp01(elapsed / pumpDuration); // 1 to 0 over duration
 
             Vector2 direction = transform.up;
             rb.AddForce(direction * jumpForce * Time.fixedDeltaTime, ForceMode2D.Force);
         }
     }
 
-    private void HandlePumpLogic()
+   private void HandlePumpLogic()
+{
+    float timeNow = Time.time;
+    
+    // Start pump if space is pressed down (happens only on the frame when pressed)
+    if (Input.GetKeyDown(KeyCode.Space) && !isPumping && timeNow >= lastPumpEndTime + pumpCooldown)
     {
-        float timeNow = Time.time;
-
-        // Start pump if input pressed and cooldown done
-        if (input.MoveInput.y > 0.1f && !isPumping && timeNow >= lastPumpEndTime + pumpCooldown)
-        {
-            isPumping = true;
-            pumpStartTime = timeNow;
-        }
-
-        // End pump early if released
-        if (isPumping && input.MoveInput.y <= 0.1f)
-        {
-            isPumping = false;
-            lastPumpEndTime = timeNow;
-        }
-
-        // End pump if time runs out
-        if (isPumping && timeNow - pumpStartTime > pumpDuration)
-        {
-            isPumping = false;
-            lastPumpEndTime = timeNow;
-        }
+        isPumping = true;
+        pumpStartTime = timeNow;
+        deflate_audio.Play();
     }
 
+    // End pump if space is released
+    if (isPumping && Input.GetKeyUp(KeyCode.Space))
+    {
+        isPumping = false;
+        lastPumpEndTime = timeNow;
+        deflate_audio.Stop();
+    }
+
+    // End pump if max duration is reached
+    if (isPumping && timeNow - pumpStartTime > pumpDuration)
+    {
+        isPumping = false;
+        lastPumpEndTime = timeNow;
+        // deflate_audio.Stop();
+    }
+}
     private void HandleRotation()
     {
         float rotationInput = -input.MoveInput.x;
