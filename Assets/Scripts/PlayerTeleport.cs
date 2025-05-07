@@ -13,7 +13,7 @@ public class PlayerTeleport : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private float levelTextDisplayTime = 2f;
+    [SerializeField] private float levelTextDisplayTime = 4f;
 
     private Vector2 startPosition;
     private Rigidbody2D rb;
@@ -42,16 +42,16 @@ public class PlayerTeleport : MonoBehaviour
                 StartCoroutine(ResetAfterDelay(1f));
                 break;
             case TAG_LEVEL_0:
-                Teleport(level0SpawnPoint, "Level 0");
+                Teleport(level0SpawnPoint, "Level 1: Explore the mechanics then go up to enter the next level!");
                 break;
             case TAG_LEVEL_1:
-                Teleport(level1SpawnPoint, "Level 1");
+                Teleport(level1SpawnPoint, "TEMPORARY");
                 break;
             case TAG_LEVEL_2:
-                Teleport(level2SpawnPoint, "Level 2");
+                Teleport(level2SpawnPoint, "Level 2: Avoid the enemies and escape!");
                 break;
             case TAG_LEVEL_3:
-                Teleport(level3SpawnPoint, "Level 3");
+                Teleport(level3SpawnPoint, "Level 4");
                 break;
             case TAG_RESTART:
                 Teleport(levelMenuSpawnPoint, "Thanks for playing MVP DEMO!");
