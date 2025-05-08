@@ -2,6 +2,12 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+// Code review : 
+// You could go a bit further and create a Level script, which manages inernal level flow (start, stop, etc...)
+// Each level would have a spawn point assigned to it and would encapulsate the teleport logic on start level.
+// Then, you would have a GameFlowManager that contains references to said levels.
+// This pattern will give you more flexibility, especially if you want to polish a bit and create more complex flows
+// when you start and end a level (small cutscenes, camera movements, VFX, etc...)
 public class PlayerTeleport : MonoBehaviour
 {
     [Header("Spawn Points")]
@@ -32,6 +38,8 @@ public class PlayerTeleport : MonoBehaviour
         StartCoroutine(DisplayLevelText("Welcome to AirBlastAdventure!"));
     }
 
+    // Code review : isolate in a script (EndLevelTrigger for instance) that 
+    // contains a reference to the next Level
     private void OnCollisionEnter2D(Collision2D collision)
     {
         string tag = collision.gameObject.tag;
@@ -77,7 +85,9 @@ public class PlayerTeleport : MonoBehaviour
     private IEnumerator ResetAfterDelay(float delay)
     {
         rb.linearVelocity = Vector2.zero;
-        rb.isKinematic = true;
+        rb.isKinematic = true; // Code review : deprecated. Set body type instead.
+        // Also, if you are trying to disable physics during that delay, I'd suggest just disabling the rigidbody
+        // instead of changing it to kinematic. 
 
         yield return new WaitForSeconds(delay);
 

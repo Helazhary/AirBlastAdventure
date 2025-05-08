@@ -11,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float pumpDuration = 0.25f;   // Max thrust duration
     [SerializeField] private float pumpCooldown = 0.5f;    // Cooldown before next pump
 
+    // Code review : encapulsate visuals in one or more classes.
+    // For example, you could have a SquashAndStretch component,
+    // a Shine component, etc etc...
     [Header("Visual Pump Feedback")]
     [SerializeField] private Transform visualTransform;
     [SerializeField] private Vector3 pumpScale = new Vector3(1.2f, 0.8f, 1f);
@@ -49,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
         HandleVisualPumpFeedback();
     }
 
+    // Code review : this is probably the only lofic that should be in a player movement script
     private void FixedUpdate()
     {
         if (isPumping)
@@ -91,6 +95,11 @@ public class PlayerMovement : MonoBehaviour
 }
     private void HandleRotation()
     {
+        // Code review : rotation could also be in its own script.
+        // Encapsulating things further will help you improve
+        // elements in your game one by one without risking string dependencies.
+
+        // You could add a bit of damping to your rotation to make it will a bit smoother.
         float rotationInput = -input.MoveInput.x;
         transform.Rotate(0f, 0f, rotationInput * rotationSpeed * Time.deltaTime);
     }
