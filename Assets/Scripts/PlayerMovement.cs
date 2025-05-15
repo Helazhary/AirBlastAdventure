@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         HandleVisualPumpFeedback();
     }
 
-    // Code review : this is probably the only lofic that should be in a player movement script
+    // Code review : this is probably the only logic that should be in a player movement script
     private void FixedUpdate()
     {
         if (isPumping)
