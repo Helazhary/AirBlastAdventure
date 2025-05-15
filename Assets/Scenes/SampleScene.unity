@@ -2663,12 +2663,13 @@ GameObject:
   - component: {fileID: 437454990}
   - component: {fileID: 437454991}
   - component: {fileID: 437454992}
+  - component: {fileID: 437454998}
   - component: {fileID: 437454993}
   - component: {fileID: 437454994}
   - component: {fileID: 437454997}
-  - component: {fileID: 437454996}
   - component: {fileID: 437454995}
-  - component: {fileID: 437454998}
+  - component: {fileID: 437454999}
+  - component: {fileID: 437455000}
   m_Layer: 0
   m_Name: AirBlasterCharacter
   m_TagString: Player
@@ -2768,13 +2769,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81fdb0199a2521ea960e83146be7172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 500
-  rotationSpeed: 100
-  pumpDuration: 0.4
-  pumpCooldown: 0
   visualTransform: {fileID: 861062307}
   pumpScale: {x: 1.2, y: 0.8, z: 1}
   scaleLerpSpeed: 5
+  defaultScale: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
+  input: {fileID: 0}
 --- !u!114 &437454994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2824,25 +2824,6 @@ MonoBehaviour:
   level3SpawnPoint: {fileID: 2118475638}
   levelText: {fileID: 1317618432}
   levelTextDisplayTime: 5
---- !u!114 &437454996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 437454988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b81fdb0199a2521ea960e83146be7172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpForce: 1
-  rotationSpeed: 4
-  pumpDuration: 3
-  pumpCooldown: 0.5
-  visualTransform: {fileID: 437454990}
-  pumpScale: {x: 1.2, y: 0.8, z: 1}
-  scaleLerpSpeed: 5
 --- !u!114 &437454997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2866,10 +2847,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1141628bb98ac5f07adade84da666819, type: 3}
-  m_Resource: {fileID: 8300000, guid: 1141628bb98ac5f07adade84da666819, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1268d7592a421971f84b7fb27bdfe240, type: 3}
+  m_Resource: {fileID: 8300000, guid: 1268d7592a421971f84b7fb27bdfe240, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.08
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2953,6 +2934,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &437454999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437454988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c14f8f49b7813559a369622984bce6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 150
+  input: {fileID: 437454997}
+--- !u!114 &437455000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437454988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42353ba211f36339083b2e9fbe2bb7d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxStretch: 3
+  stretchSpeed: 3
+  releaseForce: 3
+  visualTransform: {fileID: 437454990}
 --- !u!4 &441715704 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8344364483115132745, guid: d11c8bc329126ba60ac66314eceda0f7, type: 3}
@@ -43959,6 +43970,7 @@ GameObject:
   - component: {fileID: 1010329482}
   - component: {fileID: 1010329481}
   - component: {fileID: 1010329480}
+  - component: {fileID: 1010329484}
   m_Layer: 0
   m_Name: win
   m_TagString: ToLevel1
@@ -44490,6 +44502,26 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!249 &1010329484
+AreaEffector2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1010329478}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGlobalAngle: 0
+  m_ForceAngle: 0
+  m_ForceMagnitude: 10
+  m_ForceVariation: 0
+  m_ForceTarget: 0
+  m_Drag: 0
+  m_AngularDrag: 0
 --- !u!4 &1028376925 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8344364483115132745, guid: d11c8bc329126ba60ac66314eceda0f7, type: 3}
@@ -44778,7 +44810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: 0
+  Damping: 0.5
 --- !u!1001 &1089798399
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46365,10 +46397,10 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 5ca800b456d9faea8992bb797df208d8, type: 3}
   m_Resource: {fileID: 8300000, guid: 5ca800b456d9faea8992bb797df208d8, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.356
-  m_Pitch: 1
+  m_Volume: 0.152
+  m_Pitch: 0.91
   Loop: 1
-  Mute: 1
+  Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
