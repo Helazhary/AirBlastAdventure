@@ -35,7 +35,7 @@ public class PlayerTeleport : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         startPosition = levelMenuSpawnPoint.position;
-        StartCoroutine(DisplayLevelText("Welcome to AirBlastAdventure!"));
+        StartCoroutine(DisplayLevelText("Welcome to Circus Adventure!"));
     }
 
     // Code review : isolate in a script (EndLevelTrigger for instance) that 
