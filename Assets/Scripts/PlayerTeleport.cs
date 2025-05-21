@@ -25,6 +25,11 @@ public class PlayerTeleport : MonoBehaviour
     private Vector2 startPosition;
     private Rigidbody2D rb;
 
+    [SerializeField] private PumpLogic pumpLogic; 
+
+    private SpriteRenderer spriteRenderer;
+    private Collider2D playerCollider;
+
     private const string TAG_HAZARD = "Hazard";
     private const string TAG_LEVEL_0 = "ToLevel0";
     private const string TAG_LEVEL_1 = "ToLevel1";
@@ -32,16 +37,17 @@ public class PlayerTeleport : MonoBehaviour
     private const string TAG_LEVEL_3 = "ToLevel3";
     private const string TAG_LEVEL_4 = "ToLevel4";
     private const string TAG_RESTART = "Restart";
+    public bool isDead = false; // Exposed to other scripts
 
-    private AudioSource pop_audio;
-
+    [SerializeField] private AudioSource pop_audio;
+    [SerializeField] private Transform visualTransform;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         startPosition = levelMenuSpawnPoint.position;
+        pumpLogic = GetComponent<PumpLogic>();
         StartCoroutine(DisplayLevelText("Welcome to the Circus!"));
-        pop_audio = GetComponent<AudioSource>();
     }
 
     // Code review : isolate in a script (EndLevelTrigger for instance) that 
@@ -53,9 +59,14 @@ public class PlayerTeleport : MonoBehaviour
         switch (tag)
         {
             case TAG_HAZARD:
-                pop_audio.Play()
+                pop_audio.Play();
+                visualTransform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+                
+                if (pumpLogic != null) pumpLogic.isDead = true;
+
                 StartCoroutine(ResetAfterDelay(1f));
                 break;
+
             case TAG_LEVEL_0:
                 Teleport(level0SpawnPoint, "Level 1: Don't touch the platforms");
                 break;
@@ -102,7 +113,12 @@ public class PlayerTeleport : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         transform.position = startPosition;
+        visualTransform.localScale = Vector3.one;
+
+
         rb.isKinematic = false;
+
+        if (pumpLogic != null) pumpLogic.isDead = false;
         StartCoroutine(DisplayLevelText("Try AGAIN!"));
     }
 }

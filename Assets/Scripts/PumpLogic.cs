@@ -16,7 +16,7 @@ public class PumpLogic : MonoBehaviour
 
     private Vector3 defaultScale;  // Default scale (normal size)
     private bool isReleasing = false; // Flag to handle smooth scale back
-
+    public bool isDead = false;
     private void Start()
     {
         deflate_audio = GetComponent<AudioSource>();
@@ -42,6 +42,9 @@ public class PumpLogic : MonoBehaviour
 
     private void HandlePumpLogic()
     {
+
+        if (isDead) return;
+        
         float timeNow = Time.time;
 
         // Start pumping if space is pressed down
@@ -79,13 +82,13 @@ public class PumpLogic : MonoBehaviour
 
     private void HandleVisualStretch()
     {
-        if (isPumping)
+        if (isPumping && !isDead)
         {
             // Increase the visual stretch of the balloon
             visualTransform.localScale = Vector3.Lerp(visualTransform.localScale, 
                 defaultScale * (1 + stretchAmount / maxStretch), Time.deltaTime * stretchSpeed);
         }
-        else if (isReleasing)
+        else if (isReleasing && !isDead)
         {
             // Smoothly return to the normal size after release
             visualTransform.localScale = Vector3.Lerp(visualTransform.localScale, defaultScale, Time.deltaTime * stretchSpeed);
