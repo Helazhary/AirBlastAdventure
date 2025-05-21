@@ -11,6 +11,7 @@ TagManager:
   - CinemachineToggle
   - ToLevel0
   - ToLevel1
+  - ToLevel4
   layers:
   - Default
   - TransparentFX

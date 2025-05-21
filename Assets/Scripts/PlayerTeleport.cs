@@ -16,6 +16,7 @@ public class PlayerTeleport : MonoBehaviour
     [SerializeField] private Transform level1SpawnPoint;
     [SerializeField] private Transform level2SpawnPoint;
     [SerializeField] private Transform level3SpawnPoint;
+     [SerializeField] private Transform level4SpawnPoint;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI levelText;
@@ -29,13 +30,18 @@ public class PlayerTeleport : MonoBehaviour
     private const string TAG_LEVEL_1 = "ToLevel1";
     private const string TAG_LEVEL_2 = "ToLevel2";
     private const string TAG_LEVEL_3 = "ToLevel3";
+    private const string TAG_LEVEL_4 = "ToLevel4";
     private const string TAG_RESTART = "Restart";
+
+    private AudioSource pop_audio;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         startPosition = levelMenuSpawnPoint.position;
-        StartCoroutine(DisplayLevelText("Welcome to Circus Adventure!"));
+        StartCoroutine(DisplayLevelText("Welcome to the Circus!"));
+        pop_audio = GetComponent<AudioSource>();
     }
 
     // Code review : isolate in a script (EndLevelTrigger for instance) that 
@@ -47,22 +53,26 @@ public class PlayerTeleport : MonoBehaviour
         switch (tag)
         {
             case TAG_HAZARD:
+                pop_audio.Play()
                 StartCoroutine(ResetAfterDelay(1f));
                 break;
             case TAG_LEVEL_0:
-                Teleport(level0SpawnPoint, "Level 1: Explore the mechanics then go up to enter the next level!");
+                Teleport(level0SpawnPoint, "Level 1: Don't touch the platforms");
                 break;
             case TAG_LEVEL_1:
-                Teleport(level1SpawnPoint, "Level 3: Find the safe Exit");
+                Teleport(level1SpawnPoint, "Level 2: Avoid the enemies");
                 break;
             case TAG_LEVEL_2:
-                Teleport(level2SpawnPoint, "Level 2: Avoid the enemies and escape!");
+                Teleport(level2SpawnPoint, "Level 3");
                 break;
             case TAG_LEVEL_3:
                 Teleport(level3SpawnPoint, "Level 4");
                 break;
+            case TAG_LEVEL_4:
+                Teleport(level4SpawnPoint, "Level 5");
+                break;
             case TAG_RESTART:
-                Teleport(levelMenuSpawnPoint, "Thanks for playing MVP DEMO!");
+                Teleport(levelMenuSpawnPoint, "Thanks for playing!");
                 break;
         }
     }
@@ -88,7 +98,7 @@ public class PlayerTeleport : MonoBehaviour
         rb.isKinematic = true; // Code review : deprecated. Set body type instead.
         // Also, if you are trying to disable physics during that delay, I'd suggest just disabling the rigidbody
         // instead of changing it to kinematic. 
-
+    
         yield return new WaitForSeconds(delay);
 
         transform.position = startPosition;

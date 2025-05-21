@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2545156796841395241}
   - component: {fileID: -658886926289542837}
   - component: {fileID: 1439897707349813507}
+  - component: {fileID: 6543109871682536670}
   m_Layer: 0
   m_Name: Enemey_140x180_V3_0
   m_TagString: Hazard
@@ -153,3 +154,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.72999996, y: 1.2000002}
   m_Direction: 0
+--- !u!114 &6543109871682536670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4143573460616564057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13136a050e66b5836bc02050a5863300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+  collisionCooldown: 0.2
+  bounceAngleVariance: 45
