@@ -1,6 +1,10 @@
+using System.Diagnostics;
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
+
 
 // Code review : 
 // You could go a bit further and create a Level script, which manages inernal level flow (start, stop, etc...)
@@ -16,7 +20,7 @@ public class PlayerTeleport : MonoBehaviour
     [SerializeField] private Transform level1SpawnPoint;
     [SerializeField] private Transform level2SpawnPoint;
     [SerializeField] private Transform level3SpawnPoint;
-     [SerializeField] private Transform level4SpawnPoint;
+    [SerializeField] private Transform level4SpawnPoint;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI levelText;
@@ -25,9 +29,13 @@ public class PlayerTeleport : MonoBehaviour
     private Vector2 startPosition;
     private Rigidbody2D rb;
 
-    [SerializeField] private PumpLogic pumpLogic; 
+    [SerializeField] private PumpLogic pumpLogic;
 
-    private SpriteRenderer spriteRenderer;
+    // private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite winSprite;
+    private Sprite originalSprite;
+
     private Collider2D playerCollider;
 
     private const string TAG_HAZARD = "Hazard";
@@ -42,9 +50,15 @@ public class PlayerTeleport : MonoBehaviour
     [SerializeField] private AudioSource pop_audio;
     [SerializeField] private Transform visualTransform;
 
+    [SerializeField] private AudioSource WinAudio;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        // WinAudio.Play();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalSprite = spriteRenderer.sprite;
         startPosition = levelMenuSpawnPoint.position;
         pumpLogic = GetComponent<PumpLogic>();
         StartCoroutine(DisplayLevelText("Welcome to the Circus!"));
@@ -61,7 +75,7 @@ public class PlayerTeleport : MonoBehaviour
             case TAG_HAZARD:
                 pop_audio.Play();
                 visualTransform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
-                
+
                 if (pumpLogic != null) pumpLogic.isDead = true;
 
                 StartCoroutine(ResetAfterDelay(1f));
@@ -71,6 +85,8 @@ public class PlayerTeleport : MonoBehaviour
                 Teleport(level0SpawnPoint, "Level 1: Don't touch the platforms");
                 break;
             case TAG_LEVEL_1:
+                // rb.isKinematic = false; 
+                // StartCoroutine(PlayWinAudioThenLoad());
                 Teleport(level1SpawnPoint, "Level 2: Avoid the enemies");
                 break;
             case TAG_LEVEL_2:
@@ -83,7 +99,11 @@ public class PlayerTeleport : MonoBehaviour
                 Teleport(level4SpawnPoint, "Level 5");
                 break;
             case TAG_RESTART:
-                Teleport(levelMenuSpawnPoint, "Thanks for playing!");
+                //Pause physics
+                rb.isKinematic = false; 
+                StartCoroutine(PlayWinAudioThenLoad());
+                               // rb.isKinematic = false; 
+          
                 break;
         }
     }
@@ -107,9 +127,9 @@ public class PlayerTeleport : MonoBehaviour
     {
         rb.linearVelocity = Vector2.zero;
         rb.isKinematic = true; // Code review : deprecated. Set body type instead.
-        // Also, if you are trying to disable physics during that delay, I'd suggest just disabling the rigidbody
-        // instead of changing it to kinematic. 
-    
+                               // Also, if you are trying to disable physics during that delay, I'd suggest just disabling the rigidbody
+                               // instead of changing it to kinematic. 
+
         yield return new WaitForSeconds(delay);
 
         transform.position = startPosition;
@@ -121,4 +141,33 @@ public class PlayerTeleport : MonoBehaviour
         if (pumpLogic != null) pumpLogic.isDead = false;
         StartCoroutine(DisplayLevelText("Try AGAIN!"));
     }
+    
+ private IEnumerator PlayWinAudioThenLoad()
+{
+    // // Freeze physics movement but allow rotation manually
+    // rb.linearVelocity = Vector2.zero;
+    // rb.angularVelocity = 0f;
+    // rb.bodyType = RigidbodyType2D.Kinematic;
+
+    // WinAudio.Play();
+
+    // float timer = 0f;
+    // float duration = WinAudio.clip.length;
+
+    // while (timer < duration)
+    // {
+    //     // Rotate the visual (or whole object) in place
+    //     visualTransform.Rotate(Vector3.forward, 360 * Time.deltaTime); // 360 degrees per second
+    //     timer += Time.deltaTime;
+    //     yield return null;
+    // }
+
+    // // Restore physics if needed
+    // rb.bodyType = RigidbodyType2D.Dynamic;
+
+    SceneManager.LoadScene("EndScene");
+    // Debug.Log("Loading EndScene...");
+    yield return null;
+}
+
 }
